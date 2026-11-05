@@ -1,132 +1,170 @@
 
+
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: Home,
 })
 
+const services = [
+  { name: 'Retwist', price: 15000 },
+  { name: 'Dreadlocks Installation', price: 70000 },
+  { name: 'Loc Repair', price: 0 },
+  { name: 'Loc Styling', price: 0 },
+  { name: 'Artificial Locs', price: 0 },
+  { name: 'Loc Detox', price: 0 },
+]
+
 function Home() {
+  function submitBooking(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    const form = new FormData(e.currentTarget)
+    const selected = form.getAll('services').map(String)
+
+    if (!selected.length) {
+      alert('Chagua angalau huduma moja')
+      return
+    }
+
+    const message = [
+      'BOOKING MPYA - BEATUS DREADLOCKS',
+      '',
+      'Jina: ' + form.get('name'),
+      'Simu: ' + form.get('phone'),
+      'Huduma: ' + selected.join(', '),
+      'Tarehe: ' + form.get('date'),
+      'Muda: ' + form.get('time'),
+      'Malipo: ' + form.get('payment'),
+      'Payment code: ' + (form.get('code') || 'Bado sijalipa'),
+      'Maelezo: ' + (form.get('notes') || 'Hakuna'),
+      '',
+      'Naomba kuthibitishiwa booking yangu.'
+    ].join('\n')
+
+    window.open(
+      'https://wa.me/255715636213?text=' +
+      encodeURIComponent(message),
+      '_blank'
+    )
+  }
+
   return (
-    <main className="min-h-screen bg-[#101010] text-white">
-      <header className="border-b border-yellow-600/30 px-5 py-5">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <div>
-            <h1 className="text-xl font-black tracking-widest text-yellow-500">
-              BEATUS
-            </h1>
-            <p className="text-xs tracking-[0.25em] text-gray-400">
-              DREADLOCKS
-            </p>
-          </div>
-          <a
-            href="#booking"
-            className="rounded-full bg-yellow-500 px-5 py-2 text-sm font-bold text-black"
-          >
-            BOOK NOW
-          </a>
-        </div>
+    <main className="min-h-screen bg-black text-white">
+      <header className="border-b border-yellow-600 p-5">
+        <h1 className="text-2xl font-black text-yellow-500">
+          BEATUS DREADLOCKS
+        </h1>
+        <p className="text-sm text-gray-400">PREMIUM LOC CARE</p>
+        <a href="#booking" className="mt-3 inline-block rounded bg-yellow-500 px-5 py-2 font-bold text-black">
+          BOOK NOW
+        </a>
       </header>
 
-      <section className="mx-auto max-w-5xl px-5 py-20 text-center">
-        <p className="mb-4 text-sm font-semibold tracking-[0.3em] text-yellow-500">
-          PREMIUM LOC CARE
-        </p>
-        <h2 className="text-4xl font-black leading-tight md:text-6xl">
-          WE CARE FOR
-          <span className="block text-yellow-500">YOUR LOCS</span>
+      <section className="px-5 py-12 text-center">
+        <h2 className="text-4xl font-black">
+          YOUR LOCS
+          <span className="block text-yellow-500">OUR PASSION</span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-gray-400">
-          Karibu BEATUS DREADLOCKS. Pata huduma bora za dreadlocks
-          Ihumwa, Dodoma. Chagua huduma na weka miadi yako mtandaoni.
+        <p className="mt-4 text-gray-400">
+          Karibu Beatus Dreadlocks, Ihumwa Dodoma.
+          Book huduma yako hapa.
         </p>
-        <a
-          href="#booking"
-          className="mt-8 inline-block rounded-lg bg-yellow-500 px-8 py-4 font-bold text-black"
-        >
-          WEKA BOOKING
-        </a>
       </section>
 
-      <section id="booking" className="mx-auto max-w-2xl px-5 pb-20">
-        <div className="rounded-2xl border border-yellow-600/30 bg-[#1b1b1b] p-6 md:p-8">
-          <h3 className="text-2xl font-bold text-yellow-500">
-            Weka Booking Yako
-          </h3>
-          <p className="mt-2 text-sm text-gray-400">
-            Jaza taarifa zako ili kuomba miadi.
+      <section id="booking" className="mx-auto max-w-xl px-4 pb-12">
+        <div className="rounded-xl border border-yellow-600 p-5">
+          <h2 className="mb-2 text-2xl font-bold text-yellow-500">
+            Book an appointment
+          </h2>
+          <p className="mb-6 text-sm text-gray-400">
+            Jaza taarifa zako na uchague huduma.
           </p>
 
-          <form className="mt-8 space-y-5">
+          <form onSubmit={submitBooking} className="space-y-5">
+
             <div>
-              <label className="mb-2 block text-sm">Chagua huduma</label>
-              <select
-                required
-                className="w-full rounded-lg border border-gray-700 bg-[#101010] p-3 text-white"
-                defaultValue=""
-              >
-                <option value="" disabled>Chagua huduma</option>
-                <option>Retwist</option>
-                <option>Installation</option>
-                <option>Loc Repair</option>
-                <option>Loc Styling</option>
-                <option>Artificial Locs</option>
-                <option>Loc Detox</option>
-              </select>
+              <label className="mb-2 block">Your name</label>
+              <input name="name" required placeholder="Jina lako"
+                className="w-full rounded-lg bg-gray-900 p-3" />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm">Jina lako</label>
-              <input
-                required
-                type="text"
-                placeholder="Andika jina lako"
-                className="w-full rounded-lg border border-gray-700 bg-[#101010] p-3 text-white"
-              />
+              <label className="mb-2 block">Phone / WhatsApp</label>
+              <input name="phone" required type="tel"
+                placeholder="07XXXXXXXX"
+                className="w-full rounded-lg bg-gray-900 p-3" />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm">Namba ya simu</label>
-              <input
-                required
-                type="tel"
-                placeholder="Mfano: 07XXXXXXXX"
-                className="w-full rounded-lg border border-gray-700 bg-[#101010] p-3 text-white"
-              />
+              <p className="mb-3 font-bold">Services (chagua moja au zaidi)</p>
+              <div className="space-y-3">
+                {services.map(s => (
+                  <label key={s.name}
+                    className="flex items-center gap-3 rounded-lg bg-gray-900 p-3">
+                    <input type="checkbox" name="services"
+                      value={s.name} className="h-5 w-5 accent-yellow-500" />
+                    <span className="flex-1">{s.name}</span>
+                    <span className="font-bold text-yellow-400">
+                      {s.price ? 'TSh ' + s.price.toLocaleString() : 'Bei kuulizia'}
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             <div>
-              <label className="mb-2 block text-sm">Tarehe unayotaka</label>
-              <input
-                required
-                type="date"
-                className="w-full rounded-lg border border-gray-700 bg-[#101010] p-3 text-white"
-              />
+              <label className="mb-2 block">Appointment date</label>
+              <input name="date" type="date" required
+                className="w-full rounded-lg bg-gray-900 p-3" />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm">Muda unaopendelea</label>
-              <input
-                required
-                type="time"
-                className="w-full rounded-lg border border-gray-700 bg-[#101010] p-3 text-white"
-              />
+              <label className="mb-2 block">Appointment time</label>
+              <input name="time" type="time" required
+                className="w-full rounded-lg bg-gray-900 p-3" />
             </div>
 
-            <button
-              type="button"
-              disabled
-              className="w-full rounded-lg bg-yellow-500 p-4 font-bold text-black opacity-60"
-            >
-              BOOKING INAUNGANISHWA
+            <div>
+              <p className="mb-3 font-bold">Payment method</p>
+              <label className="mb-3 flex gap-3 rounded-lg bg-gray-900 p-3">
+                <input type="radio" name="payment"
+                  value="Pay at salon" defaultChecked />
+                Lipa saluni
+              </label>
+              <label className="flex gap-3 rounded-lg bg-gray-900 p-3">
+                <input type="radio" name="payment"
+                  value="Paid by mobile money" />
+                Nimelipa kwa simu
+              </label>
+              <label className="mb-2 mt-3 block">
+                M-Pesa confirmation code
+              </label>
+              <input name="code" placeholder="Weka transaction code"
+                className="w-full rounded-lg bg-gray-900 p-3" />
+            </div>
+
+            <div>
+              <label className="mb-2 block">Additional information</label>
+              <textarea name="notes" rows={3}
+                placeholder="Maelezo ya ziada..."
+                className="w-full rounded-lg bg-gray-900 p-3" />
+            </div>
+
+            <button type="submit"
+              className="w-full rounded-lg bg-yellow-500 p-4 font-bold text-black">
+              SUBMIT BOOKING
             </button>
-            <p className="text-center text-xs text-gray-500">
-              Mfumo wa kupokea na kuthibitisha booking unaandaliwa.
+
+            <p className="text-center text-xs text-gray-400">
+              Booking yako itatumwa WhatsApp kwa Beatus
+              kwa ajili ya kuthibitishwa.
             </p>
           </form>
         </div>
       </section>
 
-      <footer className="border-t border-yellow-600/30 px-5 py-6 text-center text-sm text-gray-500">
+      <footer className="border-t border-yellow-600 p-5 text-center text-sm text-gray-400">
         BEATUS DREADLOCKS · Ihumwa, Dodoma
         <p className="mt-2 text-yellow-500">Premium Loc Care</p>
       </footer>
